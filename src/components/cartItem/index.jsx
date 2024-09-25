@@ -6,7 +6,7 @@ function CartItem({ id, name, price, image }) {
       <img src={image} alt="product_image" />
       <h3>{name}</h3>
       <p>Цена</p>
-      <p>{price}180 E</p>
+      <p>{price}</p>
       <img src={korsina} alt="remove_icon" />
     </div>
   );

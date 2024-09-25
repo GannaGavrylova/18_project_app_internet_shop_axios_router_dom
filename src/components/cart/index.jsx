@@ -12,7 +12,8 @@ function Cart() {
   async function getCartItems() {
     try {
       const response = await axios.get(
-        "https://66ced65d901aab24841fc4b1.mockapi.io/cartItem"
+        // "https://66ced65d901aab24841fc4b1.mockapi.io/cartItem"
+        "https://66ced65d901aab24841fc4b8.mockapi.io/cartItem"
       );
       setCartList(response.data);
     } catch (error) {
@@ -20,9 +21,11 @@ function Cart() {
     }
   }
 
-  if (cartList.length === 0) {
-    return <h2>Ваша корзина пуста...</h2>;
-  }
+  const totalPrice = cartList.reduce(
+    (total, item) => total + Number(item.price),
+    0
+  );
+
   return (
     <div>
       <h1>Корзина</h1>
@@ -37,8 +40,12 @@ function Cart() {
           </div>
           <div>
             <h3>Итого</h3>
-            <div></div>
-            <h3>Цена: </h3>
+            {cartList.map((item) => (
+              <div key={item.id}>
+                {item.name} - {item.price}
+              </div>
+            ))}
+            <h3>Цена: {totalPrice} </h3>
           </div>
         </div>
       )}
