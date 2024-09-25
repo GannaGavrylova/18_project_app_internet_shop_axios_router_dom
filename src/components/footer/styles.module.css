@@ -1,0 +1,18 @@
+.footerContainer {
+  background-color: black;
+  /* color: #ffff; */
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: space-between;
+  /* position: fixed; */
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-left: 250px;
+  padding-right: 250px;
+}
+
+.footer_left > p {
+  padding-top: 73px;
+  padding-bottom: 33px;
+}
