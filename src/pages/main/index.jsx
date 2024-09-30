@@ -2,8 +2,11 @@ import styles from "./styles.module.css";
 import banner from "../../assets/images/banner.png";
 import CartList from "../../components/cartList";
 import addToCardIcon from "../../assets/icons/addToCardIcon.svg";
+// import { connect } from "react-redux";
+// import { addItemInCart } from "../../redux/actions";
 
-function Main() {
+function Main({ currentPage }) {
+  // console.log("Main component");
   const stylesData = {
     container: {
       display: "flex",
@@ -33,9 +36,24 @@ function Main() {
         icon={addToCardIcon}
         stylesData={stylesData}
         title={"Товары"}
+        currentPage={currentPage}
+        // addItemToCart={addItemToCart}
+        // cartItems={cartItems}
       />
     </div>
   );
 }
+
+// const mapStateToProps = (state) => ({
+//   cartItems: state.cartItems,
+// });
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     addItemToCart: (item) => dispatch(addItemInCart(item)),
+//   };
+// };
+
+// export default connect(mapStateToProps)(Main);
 
 export default Main;

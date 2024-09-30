@@ -1,19 +1,33 @@
 import styles from "./styles.module.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CartItem from "../cartItem";
+import { connect } from "react-redux";
+import { useState } from "react";
+import { addItemInCart, removeItem } from "../../redux/actions";
 
-function CartList({ path, icon, stylesData, title }) {
+function CartList({
+  path,
+  icon,
+  stylesData,
+  title,
+  cartItems,
+  addItemToCart,
+  removeItemFromCart,
+  currentPage,
+}) {
+  console.log("Товары в корзине:", cartItems);
   const [cartList, setCartList] = useState([]);
 
+  // Используем useEffect для получения данных с сервера
   useEffect(() => {
-    getCartItems();
-  }, []);
+    getCartItems(cartItems);
+  }, []); // Запускаем только при монтировании компонента
+
   async function getCartItems() {
     try {
       const response = await axios.get(
-        // "https://66ced65d901aab24841fc4b8.mockapi.io/cartItem"
-        `https://66ced65d901aab24841fc4b8.mockapi.io/${path}` // создаем интерполяцию
+        `https://66ced65d901aab24841fc4b8.mockapi.io/${path}`
       );
       setCartList(response.data);
     } catch (error) {
@@ -25,6 +39,16 @@ function CartList({ path, icon, stylesData, title }) {
     (total, item) => total + Number(item.price),
     0
   );
+
+  function handleAddToCart(item) {
+    console.log(item);
+    addItemToCart(item);
+  }
+
+  function handleRemoveFromCart(id) {
+    console.log(id);
+    removeItemFromCart(id);
+  }
 
   return (
     <div style={stylesData.container}>
@@ -42,6 +66,9 @@ function CartList({ path, icon, stylesData, title }) {
                   {...cartItem}
                   icon={icon}
                   stylesItem={stylesData.item}
+                  handleAdd={() => handleAddToCart(cartItem)}
+                  handleRemove={() => handleRemoveFromCart(cartItem.id)}
+                  currentPage={currentPage}
                 />
               );
             })}
@@ -49,7 +76,7 @@ function CartList({ path, icon, stylesData, title }) {
           {title === "Корзина" && (
             <div className={styles.total_order_container}>
               <h3>Итого</h3>
-              {cartList.map((item) => (
+              {cartItems.map((item) => (
                 <div key={item.id}>
                   {item.name} - {item.price}
                 </div>
@@ -64,4 +91,19 @@ function CartList({ path, icon, stylesData, title }) {
   );
 }
 
-export default CartList;
+// Подключаем состояние корзины к компоненту
+// const mapStateToProps = (state) => {
+//   return {
+//     cartItems: state.cartItems,
+//   };
+// };
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addItemToCart: (item) => dispatch(addItemInCart(item)),
+    removeItemFromCart: (id) => dispatch(removeItem(id)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CartList);
+// export default CartList;

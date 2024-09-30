@@ -1,7 +1,17 @@
 import korsina from "../../assets/icons/korsina.svg";
 import styles from "./styles.module.css";
 
-function CartItem({ id, name, price, image, icon, stylesItem }) {
+function CartItem({
+  name,
+  price,
+  image,
+  icon,
+  stylesItem,
+  handleAdd,
+  handleRemove,
+  currentPage,
+}) {
+  console.log("CartItem rendering");
   return (
     <div style={stylesItem}>
       <img className={styles.sk} src={image} alt="product_image" />
@@ -11,8 +21,11 @@ function CartItem({ id, name, price, image, icon, stylesItem }) {
         <p>Цена: </p>
         <p>{price}</p>
       </div>
-
-      <img src={icon} alt="remove_icon" />
+      {currentPage.includes("/cart") ? (
+        <img onClick={handleRemove} src={icon} alt="remove_icon" />
+      ) : (
+        <img onClick={handleAdd} src={icon} alt="add_icon" />
+      )}
     </div>
   );
 }
